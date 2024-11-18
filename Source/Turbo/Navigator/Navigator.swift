@@ -126,7 +126,7 @@ public class Navigator {
             }
             
             if #available(iOS 15.0, *) {
-                safariViewController.preferredBarTintColor = UIColor(Color(rgb: 0x141414))
+                safariViewController.preferredBarTintColor = UIColor(Color(rgb: 0x1C1C1C))
                 safariViewController.preferredControlTintColor = .tintColor
             }
 
