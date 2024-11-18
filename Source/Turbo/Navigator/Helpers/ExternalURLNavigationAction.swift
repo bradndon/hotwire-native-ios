@@ -5,6 +5,12 @@ public enum ExternalURLNavigationAction {
     /// Attempts to open via an embedded `SafariViewController` so the user stays in-app.
     /// Silently fails if you pass a URL that's not `http` or `https`.
     case openViaSafariController
+    case openViaSafariControllerFullScreen
+    case openViaSafariControllerCurrentContext
+    case openViaSafariControllerFormSheet
+    case openViaSafariControllerPopOver
+    case openViaSafariControllerOverFullScreen
+    case openViaSafariControllerOverCurrentContext
 
     /// Attempts to open via `openURL(_:options:completionHandler)`.
     /// This is useful if the external URL is a deeplink.

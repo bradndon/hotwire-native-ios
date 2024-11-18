@@ -2,6 +2,8 @@ import Foundation
 import SafariServices
 import UIKit
 import WebKit
+import SwiftUI
+
 
 class DefaultNavigatorDelegate: NSObject, NavigatorDelegate {}
 
@@ -98,13 +100,33 @@ public class Navigator {
         case .openViaSystem:
             UIApplication.shared.open(externalURL)
 
-        case .openViaSafariController:
+        case .openViaSafariController, .openViaSafariControllerCurrentContext, .openViaSafariControllerFormSheet, .openViaSafariControllerFullScreen, .openViaSafariControllerOverCurrentContext, .openViaSafariControllerOverFullScreen, .openViaSafariControllerPopOver:
             /// SFSafariViewController will crash if we pass along a URL that's not valid.
             guard externalURL.scheme == "http" || externalURL.scheme == "https" else { return }
 
             let safariViewController = SFSafariViewController(url: externalURL)
-            safariViewController.modalPresentationStyle = .pageSheet
+            switch via {
+                case .openViaSafariController:
+                    safariViewController.modalPresentationStyle = .pageSheet
+                case .openViaSafariControllerCurrentContext:
+                    safariViewController.modalPresentationStyle = .currentContext
+                case .openViaSafariControllerFormSheet:
+                    safariViewController.modalPresentationStyle = .formSheet
+                case .openViaSafariControllerFullScreen:
+                    safariViewController.modalPresentationStyle = .fullScreen
+                case .openViaSafariControllerOverCurrentContext:
+                    safariViewController.modalPresentationStyle = .overCurrentContext
+                case .openViaSafariControllerOverFullScreen:
+                    safariViewController.modalPresentationStyle = .overFullScreen
+                case .openViaSafariControllerPopOver:
+                    safariViewController.modalPresentationStyle = .popover
+                default:
+                    print("AHHHH")
+
+            }
+            
             if #available(iOS 15.0, *) {
+                safariViewController.preferredBarTintColor = UIColor(Color(rgb: 0x141414))
                 safariViewController.preferredControlTintColor = .tintColor
             }
 
@@ -337,4 +359,22 @@ extension Navigator {
         let properties = session.pathConfiguration?.properties(for: url) ?? PathProperties()
         route(VisitProposal(url: url, options: options, properties: properties))
     }
+}
+
+extension Color {
+  init(red: Int, green: Int, blue: Int) {
+    assert(red >= 0 && red <= 255, "Invalid red component")
+    assert(green >= 0 && green <= 255, "Invalid green component")
+    assert(blue >= 0 && blue <= 255, "Invalid blue component")
+    
+    self.init(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0)
+  }
+  
+  init(rgb: Int) {
+    self.init(
+      red: (rgb >> 16) & 0xFF,
+      green: (rgb >> 8) & 0xFF,
+      blue: rgb & 0xFF
+    )
+  }
 }
