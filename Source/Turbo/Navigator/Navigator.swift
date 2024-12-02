@@ -39,7 +39,7 @@ public class Navigator: NSObject {
     ///   - pathConfiguration: _optional:_ remote configuration reference
     ///   - delegate: _optional:_ delegate to handle custom view controllers
     public convenience init(pathConfiguration: PathConfiguration? = nil, delegate: NavigatorDelegate? = nil) {
-        super.init()
+        self.init()
         let session = Session(webView: Hotwire.config.makeWebView())
         session.pathConfiguration = pathConfiguration
 
