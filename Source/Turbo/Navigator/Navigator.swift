@@ -12,6 +12,7 @@ class DefaultNavigatorDelegate: NSObject, NavigatorDelegate {}
 public class Navigator {
     public unowned var delegate: NavigatorDelegate
 
+    private var currentExternalURL: URL? = nil
     public var rootViewController: UINavigationController { hierarchyController.navigationController }
     public var modalRootViewController: UINavigationController { hierarchyController.modalNavigationController }
     public var activeNavigationController: UINavigationController { hierarchyController.activeNavigationController }
@@ -21,7 +22,7 @@ public class Navigator {
         }
         return modalSession.webView
     }
-    
+
     /// Set to handle customize behavior of the `WKUIDelegate`.
     ///
     /// Subclass `WKUIController` to add additional behavior alongside alert/confirm dialogs.
@@ -103,8 +104,10 @@ public class Navigator {
         case .openViaSafariController, .openViaSafariControllerCurrentContext, .openViaSafariControllerFormSheet, .openViaSafariControllerFullScreen, .openViaSafariControllerOverCurrentContext, .openViaSafariControllerOverFullScreen, .openViaSafariControllerPopOver:
             /// SFSafariViewController will crash if we pass along a URL that's not valid.
             guard externalURL.scheme == "http" || externalURL.scheme == "https" else { return }
-
+        
+            currentExternalURL = externalURL
             let safariViewController = SFSafariViewController(url: externalURL)
+            safariViewController.delegate = self
             switch via {
                 case .openViaSafariController:
                     safariViewController.modalPresentationStyle = .pageSheet
@@ -377,4 +380,10 @@ extension Color {
       blue: rgb & 0xFF
     )
   }
+}
+
+extension Navigator: SFSafariViewControllerDelegate {
+    public func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        delegate.safariViewControllerDidDismiss(at: currentExternalURL)
+    }
 }

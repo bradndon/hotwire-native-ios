@@ -33,6 +33,8 @@ public protocol NavigatorDelegate: AnyObject {
     /// Optional. Called after a form finishes a submission.
     /// If not implemented, no action is taken.
     func formSubmissionDidFinish(at url: URL)
+
+    func safariViewControllerDidDismiss(at url: URL)
 }
 
 public extension NavigatorDelegate {
@@ -57,4 +59,9 @@ public extension NavigatorDelegate {
     func formSubmissionDidStart(to url: URL) {}
 
     func formSubmissionDidFinish(at url: URL) {}
+
+    func safariViewControllerDidDismiss(at url: URL) {
+        print("dismissed!")
+        print("url")
+    }
 }
