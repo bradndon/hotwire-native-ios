@@ -164,11 +164,11 @@ public class Navigator: NSObject {
     ///   - modalSession: the `Session` used for the modal navigation controller
     ///   - delegate: _optional:_ delegate to handle custom view controllers
     init(session: Session, modalSession: Session, delegate: NavigatorDelegate? = nil) {
-        super.init()
         self.session = session
         self.modalSession = modalSession
 
         self.delegate = delegate ?? navigatorDelegate
+        super.init()
 
         self.session.delegate = self
         self.modalSession.delegate = self
