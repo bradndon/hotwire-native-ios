@@ -9,7 +9,7 @@ class DefaultNavigatorDelegate: NSObject, NavigatorDelegate {}
 
 /// Handles navigation to new URLs using the following rules:
 /// [Navigator Handled Flows](https://github.com/hotwired/turbo-ios/Docs/Navigator.md)
-public class Navigator {
+public class Navigator: NSObject {
     public unowned var delegate: NavigatorDelegate
 
     private var currentExternalURL: URL? = nil
@@ -384,6 +384,6 @@ extension Color {
 
 extension Navigator: SFSafariViewControllerDelegate {
     public func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
-        delegate.safariViewControllerDidDismiss(at: currentExternalURL)
+        delegate.safariViewControllerDidDismiss(at: currentExternalURL!)
     }
 }
