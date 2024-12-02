@@ -39,7 +39,6 @@ public class Navigator: NSObject {
     ///   - pathConfiguration: _optional:_ remote configuration reference
     ///   - delegate: _optional:_ delegate to handle custom view controllers
     public convenience init(pathConfiguration: PathConfiguration? = nil, delegate: NavigatorDelegate? = nil) {
-        self.init()
         let session = Session(webView: Hotwire.config.makeWebView())
         session.pathConfiguration = pathConfiguration
 
@@ -165,6 +164,7 @@ public class Navigator: NSObject {
     ///   - modalSession: the `Session` used for the modal navigation controller
     ///   - delegate: _optional:_ delegate to handle custom view controllers
     init(session: Session, modalSession: Session, delegate: NavigatorDelegate? = nil) {
+        super.init()
         self.session = session
         self.modalSession = modalSession
 
