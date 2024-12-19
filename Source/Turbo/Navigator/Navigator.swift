@@ -104,7 +104,7 @@ public class Navigator: NSObject {
         case .openViaSafariController, .openViaSafariControllerCurrentContext, .openViaSafariControllerFormSheet, .openViaSafariControllerFullScreen, .openViaSafariControllerOverCurrentContext, .openViaSafariControllerOverFullScreen, .openViaSafariControllerPopOver:
             /// SFSafariViewController will crash if we pass along a URL that's not valid.
             guard externalURL.scheme == "http" || externalURL.scheme == "https" else { return }
-        
+            
             currentExternalURL = externalURL
             let safariViewController = SFSafariViewController(url: externalURL)
             safariViewController.delegate = self
@@ -132,7 +132,7 @@ public class Navigator: NSObject {
                 safariViewController.preferredBarTintColor = UIColor(Color(rgb: 0x1C1C1C))
                 safariViewController.preferredControlTintColor = .tintColor
             }
-
+            delegate.safariViewControllerWillAppear(at: currentExternalURL!)
             activeNavigationController.present(safariViewController, animated: true)
 
         case .reject:
